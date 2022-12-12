@@ -44,8 +44,8 @@ let cms = {
     'desktop': [
         ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);`],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
-        ['<i class="bi bi-github"></i> 在 Github 中查看此项目', `window.open('https://github.com/tjy-gitnub/win12','_blank');`],
-        ['<i class="bi bi-chat-left-text"></i> 发送反馈', `window.open('https://github.com/tjy-gitnub/win12/issues','_blank');`],
+        `<a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" title="https://github.com/tjy-gitnub/win12"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
+        `<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" title="https://github.com/tjy-gitnub/win12/issues"><i class="bi bi-chat-left-text"></i> 发送反馈</a>`,
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').show(200);$('#win-about>.update').hide();openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
     ],
     'winx': [
@@ -325,6 +325,9 @@ let apps = {
     calc: {
         init: () => {
             $('#calc-input').val('');
+        },
+        add: (arg) => {
+            $('#calc-input')[0].value += arg;
         }
     },
     about: {
@@ -340,6 +343,25 @@ let apps = {
                 $('#win-notepad>.text-box').val('');
                 $('#win-notepad>.text-box').removeClass('down')
             }, 200);
+        }
+    }
+}
+
+
+// 小组件
+let widgets={
+    widgets: {
+        add: (arg)=>{
+            if($('#widgets>.widgets>.content>.grid>.wg.'+arg).length!=0)return;
+            $('#widgets>.widgets>.content>.grid')[0].innerHTML+=$('#widgets>.widgets>.content>.template>.'+arg).html();
+        },
+        remove: (arg)=>{
+            $('#widgets>.widgets>.content>.grid>.wg.'+arg).remove();
+        }
+    },
+    calc:{
+        add: (arg) => {
+            $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
         }
     }
 }
@@ -443,11 +465,16 @@ function minwin(name) {
         setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     }
 }
-// 开始菜单
+// 菜单隐藏
 function hide_startmenu() {
     $('#start-menu').removeClass('show');
     $('#start-btn').removeClass('show');
     setTimeout(() => { $('#start-menu').removeClass('show-begin'); }, 200);
+}
+function hide_widgets() {
+    $('#widgets').removeClass('show');
+    $('#widgets-btn').removeClass('show');
+    setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
 }
 // 主题
 function toggletheme() {
@@ -485,20 +512,20 @@ for (let i = 0; i < wins.length; i++) {
     titbar.addEventListener('mousedown', (e) => {
         deltaLeft = e.clientX - win.offsetLeft;
         deltaTop = e.clientY - win.offsetTop;
-        page.addEventListener('mousemove', win_move);
-    })
-    page.addEventListener('mouseup', () => {
-        page.removeEventListener('mousemove', win_move);
-        if (fil) {
-            maxwin(fil.classList[1]);
-            fil = false;
-            setTimeout(() => {
-                $('#window-fill').removeClass('fill');
-                $('#window-fill').removeClass('top');
-            }, 200);
-        }
+        page.onmousemove=win_move;
     })
 }
+page.addEventListener('mouseup', () => {
+    page.onmousemove=null
+    if (fil) {
+        maxwin(fil.classList[1]);
+        fil = false;
+        setTimeout(() => {
+            $('#window-fill').removeClass('fill');
+            $('#window-fill').removeClass('top');
+        }, 200);
+    }
+})
 
 // 启动
 document.getElementsByTagName('body')[0].onload = function nupd() {
