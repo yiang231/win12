@@ -13,6 +13,7 @@
     background-color: var(--card);
     padding: 3px;
     box-shadow: 2px 2px 5px var(--sd);
+    border: 1.5px solid #6f6f6f30;
 }
 
 #win-explorer>.menu>.card>.title{
@@ -106,6 +107,7 @@
     padding: 8px;
     box-shadow: 3px 3px 8px var(--sd);
     overflow-y: auto;
+    border: 1.5px solid #6f6f6f30;
 }
 
 #win-explorer>.main>.content>.tool{
@@ -132,9 +134,24 @@
 }
 
 #win-explorer>.main>.content>.tool>.tit{
-    display: flex;
+    /* display: flex; */
     margin-top: 3px;
     margin-left: 5px;
+    overflow: hidden;
+    border: 1.5px solid transparent;
+    display: block;
+}
+
+#win-explorer>.main>.content>.tool>.tit:hover{
+    height: min-content;
+    min-width: 100px;
+    background: var(--unfoc);
+    border-radius: 5px;
+    border: 1.5px solid #6f6f6f30;
+    padding: 3px 5px;
+    margin: 0 5px 3px 0;
+    box-shadow: 2px 2px 5px var(--sd);
+    z-index: 1;
 }
 
 #win-explorer>.main>.content>.tool>.search{
@@ -163,6 +180,21 @@
     flex-direction: column;
 }
 
+#win-explorer>.main>.content>.view>*{
+    animation: exp-show 200ms;
+}
+
+@keyframes exp-show {
+    0%{
+        transform: translateX(-10px);
+        opacity: 0;
+    }
+    100%{
+        transform: none;
+        opacity: 1;
+    }
+}
+
 #win-explorer>.main>.content>.view>.info{
     color: #888;
     text-align: center;
@@ -171,9 +203,15 @@
 #win-explorer>.main>.content>.view>.item{
     width: 100%;
     padding: 2px 5px;
-    transition: 50ms;
     border-radius: 5px;
     display: flex;
+    border: 1.5px solid transparent;
+    transition: 40ms, transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
+}
+
+#win-explorer>.main>.content>.view>.item:active{
+    transform: scale(0.99);
+    transform-origin: bottom;
 }
 
 #win-explorer>.main>.content>.view>.item>img{
@@ -181,6 +219,14 @@
     height: 26px;
 }
 
+#win-explorer>.main>.content>.view>.item.file>img{
+    width: 22px;
+    height: 22px;
+    margin: 2px;
+}
+
 #win-explorer>.main>.content>.view>.item:hover{
     background-color: var(--hover);
+    /* border: 1.5px solid #6f6f6f30; */
+    box-shadow: 0 1px 2px var(--s3d);
 }
